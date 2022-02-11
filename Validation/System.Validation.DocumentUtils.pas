@@ -11,6 +11,7 @@ type
     class function ValidCep(const AValue: String): Boolean;
     class function ValidEmail(const AValue: String): Boolean;
     class function ValidIp(const AValue: String): Boolean;
+    class function ValidCellPhone(const AValue: String): Boolean;
   end;
 
 implementation
@@ -22,6 +23,26 @@ uses
   System.RegularExpressions;
 
 { TDocumentUtils }
+
+class function TDocumentUtils.ValidCellPhone(const AValue: String): Boolean;
+const
+  EMAIL_EMAIL = '^[1-9]{2}(?:[6-9]|9[1-9])[0-9]{4}[0-9]{4}$';
+var
+  lDigit: Char;
+  lPhoneTemp: string;
+begin
+  if AValue.Length <> 11 then
+    Exit(False);
+
+  for lDigit in ['0'..'9'] do
+  begin
+    lPhoneTemp := StringOfChar(lDigit, 11);
+    if AValue.Equals(lPhoneTemp) then
+      Exit(False);
+  end;
+
+  Result := TRegEx.IsMatch(AValue, EMAIL_EMAIL);
+end;
 
 class function TDocumentUtils.ValidCep(const AValue: String): Boolean;
 begin
