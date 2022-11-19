@@ -12,7 +12,7 @@ type
     class function CorrectPhoneNumber(const AValue: string): string;
     class function CorrectCellPhoneNumber(const AValue: string): string;
     class function GenerateRandomText(ASize: Byte = 60): string;
-    class function ToBinary(const AValue: string): Int64;
+    class function BinaryToInt64(const AValue: string): Int64;
   end;
 
 implementation
@@ -101,7 +101,7 @@ begin
     '');
 end;
 
-class function TStringUtils.ToBinary(const AValue: string): Int64;
+class function TStringUtils.BinaryToInt64(const AValue: string): Int64;
 var
   lDecimal: Real;
   lIndixador: Integer;
@@ -109,16 +109,11 @@ var
   lLogaritimo: Extended;
 begin
   lDecimal := 0.00;
-  lIndixador := 0;
   lExpoente := 0;
-  for lIndixador := Pred(AValue.Length) downto 0 do
+  lLogaritimo := Ln(2);
+  for lIndixador := AValue.Length downto 1 do
   begin
-    lLogaritimo :=  Ln(lExpoente);
-    lDecimal := lDecimal +
-      (
-         AValue.Substring(lIndixador, -1).ToExtended() * Exp(lExpoente * lLogaritimo)
-
-      );
+    lDecimal := lDecimal + (StrToFloat(AValue[lIndixador]) * Exp(lExpoente * lLogaritimo));
     lExpoente := lExpoente + 1;
   end;
   Result := Round(lDecimal);
