@@ -10,18 +10,32 @@ uses
 type
   TImageSizeUtils = class sealed
   private
-    class function ExtractImageType(const AExtension: String): TdxImageDataFormat;
+    class function ExtractImageType(const AExtension: string): TdxImageDataFormat;
   public
-    class function RedimensionarImagem(const pArquivo: String; pLargura, pAltura: Integer): String;
-    class function RedimensionarLarguraImagem(const pArquivo: String; pLargura: Integer): String;
-    class function RedimensionarAlturaImagem(const pArquivo: String; pAltura: Integer): String;
+    class function RedimensionarImagem(
+      const AArquivo: string;
+      ALargura, AAltura: Integer;
+      APreserveFileName: Boolean): string;
+
+    class function RedimensionarLarguraImagem(
+      const AArquivo: string;
+      ALargura: Integer;
+      APreserveFileName: Boolean): string;
+
+    class function RedimensionarAlturaImagem(
+      const AArquivo: string;
+      AAltura: Integer;
+      APreserveFileName: Boolean): string;
   end;
 
 implementation
 
 { TImageSizeUtils }
 
-class function TImageSizeUtils.RedimensionarImagem(const pArquivo: String; pLargura, pAltura: Integer): String;
+class function TImageSizeUtils.RedimensionarImagem(
+  const AArquivo: string;
+  ALargura, AAltura: Integer;
+  APreserveFileName: Boolean): string;
 var
   lImagem: TdxSmartImage;
   lLargura: Integer;
@@ -31,25 +45,40 @@ var
 begin
   lImagem := TdxSmartImage.Create();
   try
-    lImagem.LoadFromFile(pArquivo);
-    lLargura := pLargura;
-    lAltura := pAltura;
-    lImagem.Resize(lLargura, lAltura);
+    lImagem.LoadFromFile(AArquivo);
 
-    lExtension := ExtractFileExt(pArquivo);
-    lImagem.ImageDataFormat := ExtractImageType(lExtension);
+    lLargura := ALargura;
+    lAltura := AAltura;
 
-    lFileName := TPath.GetTempFileName();
-    lFileName := ChangeFileExt(lFileName, lExtension);
+    lImagem.Resize(
+      lLargura,
+      lAltura);
 
-    Result := lFileName;
+    if APreserveFileName then
+      Result := AArquivo
+    else
+    begin
+      lExtension := ExtractFileExt(AArquivo);
+      lImagem.ImageDataFormat := ExtractImageType(lExtension);
+
+      lFileName := TPath.GetTempFileName();
+      lFileName := ChangeFileExt(
+        lFileName,
+        lExtension);
+
+      Result := lFileName;
+    end;
+
     lImagem.SaveToFile(Result);
   finally
     lImagem.Free;
   end;
 end;
 
-class function TImageSizeUtils.RedimensionarLarguraImagem(const pArquivo: String; pLargura: Integer): String;
+class function TImageSizeUtils.RedimensionarLarguraImagem(
+  const AArquivo: string;
+  ALargura: Integer;
+  APreserveFileName: Boolean): string;
 var
   lImagem: TdxSmartImage;
   lLargura: Integer;
@@ -57,19 +86,23 @@ var
 begin
   lImagem := TdxSmartImage.Create();
   try
-    lImagem.LoadFromFile(pArquivo);
-    lLargura := pLargura;
-    if (lImagem.Width < pLargura) then begin
-      Exit(pArquivo);
-    end;
+    lImagem.LoadFromFile(AArquivo);
+    lLargura := ALargura;
+    if (lImagem.Width < ALargura) then
+      Exit(AArquivo);
     lAltura := Trunc((lLargura / lImagem.Width) * lImagem.Height);
   finally
     lImagem.Free;
   end;
-  Result := RedimensionarImagem(pArquivo, lLargura, lAltura);
+
+  Result := RedimensionarImagem(
+    AArquivo,
+    lLargura,
+    lAltura,
+    APreserveFileName);
 end;
 
-class function TImageSizeUtils.ExtractImageType(const AExtension: String): TdxImageDataFormat;
+class function TImageSizeUtils.ExtractImageType(const AExtension: string): TdxImageDataFormat;
 var
   lExtension: string;
 begin
@@ -91,7 +124,10 @@ begin
 
 end;
 
-class function TImageSizeUtils.RedimensionarAlturaImagem(const pArquivo: String; pAltura: Integer): String;
+class function TImageSizeUtils.RedimensionarAlturaImagem(
+  const AArquivo: string;
+  AAltura: Integer;
+  APreserveFileName: Boolean): string;
 var
   lImagem: TdxSmartImage;
   lLargura: Integer;
@@ -99,16 +135,20 @@ var
 begin
   lImagem := TdxSmartImage.Create();
   try
-    lImagem.LoadFromFile(pArquivo);
-    lAltura := pAltura;
-    if (lImagem.Height < pAltura) then begin
-      Exit(pArquivo);
-    end;
+    lImagem.LoadFromFile(AArquivo);
+    lAltura := AAltura;
+    if (lImagem.Height < AAltura) then
+      Exit(AArquivo);
     lLargura := Trunc((lAltura / lImagem.Height) * lImagem.Width);
   finally
     lImagem.Free;
   end;
-  Result := RedimensionarImagem(pArquivo, lLargura, lAltura);
+
+  Result := RedimensionarImagem(
+    AArquivo,
+    lLargura,
+    lAltura,
+    APreserveFileName);
 end;
 
 end.
