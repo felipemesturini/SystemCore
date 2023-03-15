@@ -13,9 +13,10 @@ type
     Label1: TLabel;
     Label2: TLabel;
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   public
     [Subscribe(TThreadMode.Main)]
-    procedure OnWeatherInfoEvent(aWeatherInfo: TWeatherInformation);
+    procedure OnWeatherInfoEvent(AWeatherInfo: IWeatherInformation);
   end;
 
 var
@@ -28,13 +29,18 @@ implementation
 
 procedure TTemperatureForm.FormCreate(Sender: TObject);
 begin
-  GlobalEventBus.RegisterSubscriber(Self);
+  GlobalEventBus.RegisterSubscriberForEvents(Self);
+  TWeatherModel.StartPolling;
 end;
 
-procedure TTemperatureForm.OnWeatherInfoEvent(aWeatherInfo
-  : TWeatherInformation);
+procedure TTemperatureForm.FormDestroy(Sender: TObject);
 begin
-  Label2.Text := Format('%d °C', [aWeatherInfo.Temperature]);
+  TWeatherModel.StopPolling;
+end;
+
+procedure TTemperatureForm.OnWeatherInfoEvent(AWeatherInfo: IWeatherInformation);
+begin
+  Label2.Text := Format('%d °C', [AWeatherInfo.Temperature]);
 end;
 
 end.

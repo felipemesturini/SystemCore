@@ -20,39 +20,34 @@ type
   public
     { Public declarations }
     [Subscribe]
-    procedure OnMemoChange(AEvent: TMemoChangeEvent);
+    procedure OnMemoChange(AEvent: IMemoChangeEvent);
     [Subscribe]
-    procedure OnCheckBoxChange(AEvent: TCheckBoxEvent);
+    procedure OnCheckBoxChange(AEvent: ICheckBoxEvent);
   end;
 
 var
-  frmSecond: TfrmSecond;
+  FrmSecond: TfrmSecond;
 
 implementation
-
-uses
-  RttiUtilsU, System.Rtti;
 
 {$R *.dfm}
 
 procedure TfrmSecond.CheckBox2Click(Sender: TObject);
 begin
   if (CheckBox2.Checked) then
-    GlobalEventBus.RegisterSubscriber(self)
+    GlobalEventBus.RegisterSubscriberForEvents(Self)
   else
-    GlobalEventBus.Unregister(self);
+    GlobalEventBus.UnregisterForEvents(Self);
 end;
 
-procedure TfrmSecond.OnCheckBoxChange(AEvent: TCheckBoxEvent);
+procedure TfrmSecond.OnCheckBoxChange(AEvent: ICheckBoxEvent);
 begin
   CheckBox1.Checked := AEvent.Checked;
-  AEvent.Free;
 end;
 
-procedure TfrmSecond.OnMemoChange(AEvent: TMemoChangeEvent);
+procedure TfrmSecond.OnMemoChange(AEvent: IMemoChangeEvent);
 begin
   MemoObserver.Lines.Text := AEvent.Text;
-  AEvent.Free;
 end;
 
 end.

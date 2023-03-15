@@ -8,7 +8,7 @@ object HeaderFooterForm: THeaderFooterForm
   FormFactor.Height = 900
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  DesignerMasterStyle = 3
+  DesignerMasterStyle = 0
   object Header: TToolBar
     Size.Width = 384.000000000000000000
     Size.Height = 48.000000000000000000
@@ -30,7 +30,7 @@ object HeaderFooterForm: THeaderFooterForm
     Size.Height = 519.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 2
     TabPosition = None
     Sizes = (
@@ -42,7 +42,7 @@ object HeaderFooterForm: THeaderFooterForm
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 8.000000000000000000
       Size.Height = 8.000000000000000000
       Size.PlatformDefault = False
@@ -127,7 +127,7 @@ object HeaderFooterForm: THeaderFooterForm
           TabOrder = 0
           Hint = 'Username'
           Size.Width = 308.013977050781300000
-          Size.Height = 32.000000000000000000
+          Size.Height = 32.608428955078130000
           Size.PlatformDefault = False
           TextPrompt = 'Username...'
         end
@@ -137,7 +137,7 @@ object HeaderFooterForm: THeaderFooterForm
           TabOrder = 1
           Password = True
           Size.Width = 308.013977050781300000
-          Size.Height = 32.000000000000000000
+          Size.Height = 32.608428955078130000
           Size.PlatformDefault = False
           TextPrompt = 'Password...'
         end
@@ -171,7 +171,7 @@ object HeaderFooterForm: THeaderFooterForm
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 8.000000000000000000
       Size.Height = 8.000000000000000000
       Size.PlatformDefault = False

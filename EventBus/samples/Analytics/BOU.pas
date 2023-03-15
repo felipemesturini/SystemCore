@@ -3,15 +3,32 @@ unit BOU;
 interface
 
 type
+  IAnalyticsEvent = interface(IInvokable)
+  ['{50DABFB6-62D3-42C9-91BC-4D6357D75DF3}']
+    procedure SetWhat(const AValue: string);
+    procedure SetWhen(const AValue: TDateTime);
+    procedure SetWho(const AValue: string);
 
-  TAnalyticsEvent = class(TObject)
+    function GetWhat: String;
+    function GetWhen: TDateTime;
+    function GetWho: String;
+
+    property What: string read GetWhat write SetWhat;
+    property When: TDateTime read GetWhen write SetWhen;
+    property Who: string read GetWho write SetWho;
+  end;
+
+  TAnalyticsEvent = class(TInterfacedObject, IAnalyticsEvent)
   private
-    FWho: string;
+    FWho:  string;
     FWhat: string;
     FWhen: TDateTime;
-    procedure SetWhat(const Value: string);
-    procedure SetWhen(const Value: TDateTime);
-    procedure SetWho(const Value: string);
+    procedure SetWhat(const AValue: string);
+    procedure SetWhen(const AValue: TDateTime);
+    procedure SetWho(const AValue: string);
+    function GetWhat: String;
+    function GetWhen: TDateTime;
+    function GetWho: String;
   public
     constructor Create(const What, Who: string; const When: TDateTime);
     property What: string read FWhat write SetWhat;
@@ -25,24 +42,39 @@ implementation
 
 constructor TAnalyticsEvent.Create(const What, Who: string; const When: TDateTime);
 begin
-  FWhat := What;
-  FWho := Who;
-  FWhen := When;
+ FWhat := What;
+ FWho := Who;
+ FWhen := When;
 end;
 
-procedure TAnalyticsEvent.SetWhat(const Value: string);
+function TAnalyticsEvent.GetWhat: String;
 begin
-  FWhat := Value;
+  Result:= FWhat;
 end;
 
-procedure TAnalyticsEvent.SetWhen(const Value: TDateTime);
+function TAnalyticsEvent.GetWhen: TDateTime;
 begin
-  FWhen := Value;
+  Result:= FWhen;
 end;
 
-procedure TAnalyticsEvent.SetWho(const Value: string);
+function TAnalyticsEvent.GetWho: String;
 begin
-  FWho := Value;
+  Result:= FWho;
+end;
+
+procedure TAnalyticsEvent.SetWhat(const AValue: string);
+begin
+  FWhat := AValue;
+end;
+
+procedure TAnalyticsEvent.SetWhen(const AValue: TDateTime);
+begin
+  FWhen := AValue;
+end;
+
+procedure TAnalyticsEvent.SetWho(const AValue: string);
+begin
+  FWho := AValue;
 end;
 
 end.

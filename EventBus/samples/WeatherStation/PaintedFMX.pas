@@ -18,8 +18,7 @@ type
   public
     { Public declarations }
     [Subscribe(TThreadMode.Main)]
-    procedure OnWeatherInfoEvent(aWeatherInfo: TWeatherInformation);
-
+    procedure OnWeatherInfoEvent(AWeatherInfo: IWeatherInformation);
   end;
 
 var
@@ -32,13 +31,12 @@ implementation
 
 procedure TPaintedForm.FormCreate(Sender: TObject);
 begin
-  GlobalEventBus.RegisterSubscriber(Self);
+  GlobalEventBus.RegisterSubscriberForEvents(Self);
 end;
 
-procedure TPaintedForm.OnWeatherInfoEvent(aWeatherInfo: TWeatherInformation);
+procedure TPaintedForm.OnWeatherInfoEvent(AWeatherInfo: IWeatherInformation);
 begin
-  Image1.Bitmap := ImageList1.Bitmap(Image1.Size.Size,
-    Integer(aWeatherInfo.WeatherType));
+  Image1.Bitmap := ImageList1.Bitmap(Image1.Size.Size, Integer(AWeatherInfo.WeatherType));
 end;
 
 end.
