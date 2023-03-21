@@ -24,6 +24,8 @@ interface
 uses
   System.SysUtils;
 
+{$WARNINGS OFF}
+
 type
   /// <summary>
   ///   Provides public interface of event bus implementation. Two types of
@@ -460,4 +462,6 @@ begin
 end;
 
 end.
+
+
 
