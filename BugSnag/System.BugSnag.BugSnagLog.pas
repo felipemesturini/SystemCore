@@ -28,6 +28,8 @@ type
     destructor Destroy; override;
 
     function AddEvent: Integer;
+    function FirstExceptionEvent(): string;
+    function FirstMessageExceptionEvent(): string;
   end;
 
 implementation
@@ -65,5 +67,29 @@ begin
   inherited;
 end;
 
+
+function TBugSnagLog.FirstExceptionEvent: string;
+begin
+  Result := EmptyStr;
+  if Length(Self.Events) = 0 then
+    Exit;
+
+  if Length(Self.Events[0].Exceptions) = 0 then
+    Exit;
+
+  Result := Self.Events[0].Exceptions[0].ErrorClass;
+end;
+
+function TBugSnagLog.FirstMessageExceptionEvent: string;
+begin
+  Result := EmptyStr;
+  if Length(Self.Events) = 0 then
+    Exit;
+
+  if Length(Self.Events[0].Exceptions) = 0 then
+    Exit;
+
+  Result := Self.Events[0].Exceptions[0].Message;
+end;
 
 end.
