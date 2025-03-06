@@ -13,7 +13,7 @@ type
     class function LastDateOfPriorWeek: TDate;
     class function FirsDateOfPriorMonth: TDate;
     class function LastDateOfPriorMonth: TDate;
-    class function MonthsBetweenDates(AStartDate, AEndDate: TDate): Word;
+    class function MonthsBetweenDates(AStartDate, AEndDate: TDate): Integer;
   end;
 
 implementation
@@ -108,7 +108,7 @@ begin
   Result := lData;
 end;
 
-class function TDateUtils.MonthsBetweenDates(AStartDate, AEndDate: TDate): Word;
+class function TDateUtils.MonthsBetweenDates(AStartDate, AEndDate: TDate): Integer;
 var
   lStartYear: Word;
   lStartMonth: Word;
@@ -130,11 +130,8 @@ begin
 
   Result := (lEndYear - lStartYear) * 12 + (lEndMonth - lStartMonth);
 
-  // Adjust for cases where the end date's day is before the start date's day.
   if (lEndYear = lStartYear) and (lEndMonth = lStartMonth) and (lEndDay < lStartDay) then
     Result := 0;
-//  else if (lEndDay < lStartDay) then
-//    Dec(Result);
 
   if Result < 0 then
     Result := 0
