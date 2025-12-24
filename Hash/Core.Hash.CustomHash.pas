@@ -18,7 +18,6 @@ implementation
 uses
   System.Math,
   System.Hash,
-  JvCipher,
   System.SysUtils;
 
 { TCustomHash }
